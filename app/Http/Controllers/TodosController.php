@@ -15,4 +15,8 @@ class TodosController extends Controller
     public function store(Request $request){
         return Todo::create(["content"=> $request->content]);
     }
+    // Will delete all todos
+    public function destroy(Todo $todo, Request $request){
+        return Todo::destroy($todo->id);
+    }
 }

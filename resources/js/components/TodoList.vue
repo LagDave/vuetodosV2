@@ -4,7 +4,7 @@
       <div class="col-lg-5 card card-body shadow">
         <transition-group name="fade">
           <todo-item
-            v-bind:content="todo.content"
+            v-bind:todo="todo"
             class="shadow-sm card card-body my-1"
             v-for="todo in todos"
             v-bind:key="todo.id"
@@ -33,7 +33,8 @@ export default {
 .card {
   border: none;
 }
-.fade-enter-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
 .fade-enter {
@@ -41,5 +42,11 @@ export default {
 }
 .fade-enter-to {
   opacity: 1;
+}
+.fade-leave {
+  opacity: 1;
+}
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

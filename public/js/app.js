@@ -1960,6 +1960,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _util_EventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/EventBus */ "./resources/js/util/EventBus.js");
 //
 //
 //
@@ -1976,8 +1977,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["content"]
+  props: ["todo"],
+  methods: {
+    deleteTodo: function deleteTodo(id) {
+      _util_EventBus__WEBPACK_IMPORTED_MODULE_0__["default"].$emit("delete-todo", id);
+    }
+  }
 });
 
 /***/ }),
@@ -2053,7 +2060,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card[data-v-30436d6f] {\r\n  border: none;\n}\n.fade-enter-active[data-v-30436d6f] {\r\n  -webkit-transition: opacity 0.5s;\r\n  transition: opacity 0.5s;\n}\n.fade-enter[data-v-30436d6f] {\r\n  opacity: 0;\n}\n.fade-enter-to[data-v-30436d6f] {\r\n  opacity: 1;\n}\r\n", ""]);
+exports.push([module.i, "\n.card[data-v-30436d6f] {\r\n  border: none;\n}\n.fade-enter-active[data-v-30436d6f],\r\n.fade-leave-active[data-v-30436d6f] {\r\n  -webkit-transition: opacity 0.5s;\r\n  transition: opacity 0.5s;\n}\n.fade-enter[data-v-30436d6f] {\r\n  opacity: 0;\n}\n.fade-enter-to[data-v-30436d6f] {\r\n  opacity: 1;\n}\n.fade-leave[data-v-30436d6f] {\r\n  opacity: 1;\n}\n.fade-leave-to[data-v-30436d6f] {\r\n  opacity: 0;\n}\r\n", ""]);
 
 // exports
 
@@ -20575,10 +20582,25 @@ var render = function() {
   return _c("div", [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "content col-lg-9" }, [
-        _vm._v(_vm._s(_vm.content))
+        _vm._v(_vm._s(_vm.todo.content))
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _c("div", { staticClass: "btn-group col-lg-3" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-sm btn-danger",
+            on: {
+              click: function($event) {
+                return _vm.deleteTodo(_vm.todo.id)
+              }
+            }
+          },
+          [_c("i", { staticClass: "fas fa-trash" })]
+        ),
+        _vm._v(" "),
+        _vm._m(0)
+      ])
     ])
   ])
 }
@@ -20587,15 +20609,11 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "btn-group col-lg-3" }, [
-      _c("button", { staticClass: "btn btn-sm btn-danger" }, [
-        _c("i", { staticClass: "fas fa-trash" })
-      ]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-sm btn-success" }, [
-        _c("i", { staticClass: "fas fa-pen" })
-      ])
-    ])
+    return _c(
+      "button",
+      { staticClass: "btn btn-sm btn-success", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fas fa-pen" })]
+    )
   }
 ]
 render._withStripped = true
@@ -20632,7 +20650,7 @@ var render = function() {
               return _c("todo-item", {
                 key: todo.id,
                 staticClass: "shadow-sm card card-body my-1",
-                attrs: { content: todo.content }
+                attrs: { todo: todo }
               })
             }),
             1
@@ -32852,11 +32870,25 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
 
         _this2.fetchTodos();
       });
+    },
+    deleteTodo: function deleteTodo(id) {
+      var _this3 = this;
+
+      fetch("todos/".concat(id), {
+        method: 'delete'
+      }).then(function (res) {
+        return res.json();
+      }).then(function (data) {
+        _this3.fetchTodos();
+      })["catch"](function (err) {
+        return console.log(err);
+      });
     }
   },
   created: function created() {
     this.fetchTodos();
     _util_EventBus__WEBPACK_IMPORTED_MODULE_4__["default"].$on('save-todo', this.saveTodo);
+    _util_EventBus__WEBPACK_IMPORTED_MODULE_4__["default"].$on('delete-todo', this.deleteTodo);
   }
 });
 

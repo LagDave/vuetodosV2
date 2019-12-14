@@ -44,10 +44,21 @@ const app = new Vue({
                     this.todo.content = "";
                     this.fetchTodos();
                 })
+        },
+        deleteTodo(id) {
+            fetch(`todos/${id}`, {
+                method: 'delete'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    this.fetchTodos();
+                })
+                .catch(err => console.log(err))
         }
     },
     created() {
         this.fetchTodos();
         EventBus.$on('save-todo', this.saveTodo);
+        EventBus.$on('delete-todo', this.deleteTodo);
     }
 })
